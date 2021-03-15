@@ -1,0 +1,5 @@
+.vscode
+
+# for nodejs
+nodejs/dist
+nodejs/node_modules
