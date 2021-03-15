@@ -1,2 +1,3 @@
 auto-sklearn
 flask
+flask_cors
