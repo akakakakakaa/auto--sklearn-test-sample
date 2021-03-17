@@ -12,7 +12,6 @@ ns = Namespace("autosklearn", description="autosklearn operations")
 autosklearn_classification_parser = reqparse.RequestParser(bundle_errors=True)
 autosklearn_classification_parser.add_argument("training_time", type=int, required=True)
 autosklearn_classification_parser.add_argument("memory_limit", type=int, required=True)
-autosklearn_classification_parser.add_argument("dataset_name", type=str, required=True)
 autosklearn_classification_parser.add_argument(
   "metric",
   choices=tuple(AutosklearnWrapper.get_classification_metrics()),
@@ -26,7 +25,6 @@ autosklearn_classification_parser.add_argument("file", location="files", type=Fi
 autosklearn_regression_parser = reqparse.RequestParser(bundle_errors=True)
 autosklearn_regression_parser.add_argument("training_time", type=int, required=True)
 autosklearn_regression_parser.add_argument("memory_limit", type=int, required=True)
-autosklearn_regression_parser.add_argument("dataset_name", type=str, required=True)
 autosklearn_regression_parser.add_argument(
   "metric",
   choices=tuple(AutosklearnWrapper.get_regression_metrics()),
@@ -67,7 +65,6 @@ info_model = ns.model("info", {
   "id": fields.Integer,
   "algorithm": fields.String,
   "training_time": fields.Integer,
-  "dataset_name": fields.String,
   "metric": fields.String,
   "scoring_functions": fields.List(fields.String)
 })
@@ -93,7 +90,7 @@ class AutosklearnClassifier(Resource):
         algorithm="classification",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
-        dataset_name=args["dataset_name"],
+        dataset_name=args["file"].filename,
         metric=args["metric"],
         df=csv_frame,
         target_column=args["target_column"]
@@ -124,7 +121,7 @@ class AutosklearnClassifier(Resource):
         algorithm="regression",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
-        dataset_name=args["dataset_name"],
+        dataset_name=args["file"].filename,
         metric=args["metric"],
         df=args["csv_frame"],
         target_column=args["target_column"]
