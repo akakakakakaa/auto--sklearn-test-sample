@@ -10,6 +10,7 @@ ns = Namespace("autosklearn", description="autosklearn operations")
 
 #
 autosklearn_classification_parser = reqparse.RequestParser(bundle_errors=True)
+autosklearn_classification_parser.add_argument("name", type=str, required=True)
 autosklearn_classification_parser.add_argument("training_time", type=int, required=True)
 autosklearn_classification_parser.add_argument("memory_limit", type=int, required=True)
 autosklearn_classification_parser.add_argument(
@@ -23,6 +24,7 @@ autosklearn_classification_parser.add_argument("file", location="files", type=Fi
 
 #
 autosklearn_regression_parser = reqparse.RequestParser(bundle_errors=True)
+autosklearn_regression_parser.add_argument("name", type=str, required=True)
 autosklearn_regression_parser.add_argument("training_time", type=int, required=True)
 autosklearn_regression_parser.add_argument("memory_limit", type=int, required=True)
 autosklearn_regression_parser.add_argument(
@@ -35,7 +37,7 @@ autosklearn_regression_parser.add_argument("target_column", type=str, required=T
 autosklearn_regression_parser.add_argument("file", location="files", type=FileStorage, required=True)
 
 #
-history_model = ns.model("history", {
+history_model = ns.model("autosklearn_history", {
   "estimator": fields.List(
     fields.Nested(ns.model("estimator", {
       "name": fields.String,
@@ -61,8 +63,9 @@ history_model = ns.model("history", {
 })
 
 #
-info_model = ns.model("info", {
+info_model = ns.model("autosklearn_info", {
   "id": fields.Integer,
+  "name": fields.String,
   "algorithm": fields.String,
   "training_time": fields.Integer,
   "metric": fields.String,
@@ -70,9 +73,23 @@ info_model = ns.model("info", {
 })
 
 #
-metric_model = ns.model("metrics", {
+metric_model = ns.model("autosklearn_support_metrics", {
   "metrics": fields.List(fields.String)
 })
+
+#
+runs_model = ns.model("autosklearn_runs", {
+  "runs": fields.List(
+    fields.Nested(
+      ns.model("autosklearn_run_info", {
+        "id": fields.Integer,
+        "name": fields.String,
+        "status": fields.String
+      })
+    )
+  )
+})
+
 
 
 @ns.route("/classification")
@@ -80,6 +97,7 @@ class AutosklearnClassifier(Resource):
   @ns.doc(body=autosklearn_classification_parser)
   @ns.expect(autosklearn_classification_parser)
   @ns.response(200, "Success", info_model)
+  @ns.response(409, "Name already exists")
   def post(self):
     args = autosklearn_classification_parser.parse_args()
 
@@ -87,6 +105,7 @@ class AutosklearnClassifier(Resource):
     csv_frame = pd.read_csv(BytesIO(data), encoding="utf-8-sig")
 
     id = manager.create_autosklearn_wrapper(
+        name=args["name"],
         algorithm="classification",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
@@ -96,7 +115,10 @@ class AutosklearnClassifier(Resource):
         target_column=args["target_column"]
     )
 
-    return manager.get_info(id)
+    if id is None:
+      ns.abort(409)
+    else:
+      return manager.get_info(id)
 
 
 @ns.route("/classification/metrics")
@@ -111,6 +133,7 @@ class AutosklearnClassifier(Resource):
   @ns.doc(body=autosklearn_regression_parser)
   @ns.expect(autosklearn_regression_parser)
   @ns.response(200, "Success", info_model)
+  @ns.response(409, "Name already exists")
   def post(self):
     args = autosklearn_regression_parser.parse_args()
 
@@ -118,6 +141,7 @@ class AutosklearnClassifier(Resource):
     csv_frame = pd.read_csv(BytesIO(data), encoding="utf-8-sig")
 
     id = manager.create_autosklearn_wrapper(
+        name=args["name"],
         algorithm="regression",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
@@ -127,7 +151,10 @@ class AutosklearnClassifier(Resource):
         target_column=args["target_column"]
     )
 
-    return manager.get_info(id)
+    if id is None:
+      ns.abort(409)
+    else:
+      return manager.get_info(id)
 
 
 @ns.route("/regression/metrics")
@@ -163,3 +190,11 @@ class AutosklearnInfo(Resource):
       ns.abort(404)
     else:
       return info
+
+
+@ns.route("/")
+class AutosklearnList(Resource):
+  @ns.response(200, "Success", runs_model)
+  def get(self):
+    runs = manager.get_runs_with_status()
+    return {"runs": runs}
