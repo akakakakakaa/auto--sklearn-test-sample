@@ -2,6 +2,7 @@
 
 # for flask
 __pycache__
+flask/storage
 
 # for nodejs
 nodejs/dist
