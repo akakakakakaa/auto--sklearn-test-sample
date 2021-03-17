@@ -1,8 +1,7 @@
 # Install
 
 ```
-npm init
-npm build
+npm install
 ```
 
 # Run
