@@ -45,6 +45,18 @@ class AutosklearnWrapperManagerInstance:
       return autosklearn_wrapper.thread.ident
     
 
+  def delete_autosklearn_wrapper(
+    self,
+    id: int
+  ) -> Optional[int]:
+    # TODO: thread can't stop. change thread to process
+    if id in list(self.wrappers_dict.keys()):
+      del self.wrappers_dict[id]
+      return 1
+    else:
+      return None
+
+
   def get_history(
     self,
     id: int

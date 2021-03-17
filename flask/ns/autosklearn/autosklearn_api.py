@@ -192,6 +192,20 @@ class AutosklearnInfo(Resource):
       return info
 
 
+@ns.route("/<int:id>")
+@ns.param("id", "autosklearn id")
+class AutosklearnDelete(Resource):
+  @ns.response(200, "Success")
+  @ns.response(404,  "Id Not exists")
+  def delete(self, id):
+    result = manager.delete_autosklearn_wrapper(id)
+    
+    if result is None:
+      ns.abort(404)
+    else:
+      return {"msg": "success"}
+
+
 @ns.route("/")
 class AutosklearnList(Resource):
   @ns.response(200, "Success", runs_model)
