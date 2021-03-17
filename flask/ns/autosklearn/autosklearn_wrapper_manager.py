@@ -1,5 +1,5 @@
 from typing import List, Optional, Dict
-from autosklearn_wrapper import AutosklearnWrapper
+from ns.autosklearn.autosklearn_wrapper import AutosklearnWrapper
 import pandas as pd
 
 

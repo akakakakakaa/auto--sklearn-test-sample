@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields, reqparse
 from werkzeug.datastructures import FileStorage
-from autosklearn_wrapper_manager import manager
-from autosklearn_wrapper import AutosklearnWrapper
+from ns.autosklearn.autosklearn_wrapper_manager import manager
+from ns.autosklearn.autosklearn_wrapper import AutosklearnWrapper
 import pandas as pd
 from io import BytesIO
 
