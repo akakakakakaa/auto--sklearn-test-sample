@@ -73,7 +73,6 @@ class AutosklearnWrapperManagerInstance:
     self,
     id: int
   ) -> Optional[Dict]:
-    print(id)
     if id not in list(self.wrappers_dict.keys()):
       return None
     else:
