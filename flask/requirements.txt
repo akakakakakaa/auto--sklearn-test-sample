@@ -1,2 +1,6 @@
 auto-sklearn
 flask
+flask-cors
+flask-restx
+pandas
+typing

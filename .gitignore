@@ -1,5 +1,8 @@
 .vscode
 
+# for flask
+__pycache__
+
 # for nodejs
 nodejs/dist
 nodejs/node_modules

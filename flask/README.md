@@ -10,4 +10,6 @@ pip install -r requirements.txt
 
 ```
 python main.py
+# and open browser, access to localhost:5500
 ```
+
