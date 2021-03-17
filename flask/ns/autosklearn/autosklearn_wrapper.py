@@ -185,6 +185,7 @@ class AutosklearnWrapper:
     self.thread.start()
     self.status = "Running"
 
+
   def get_history(self) -> Dict:
     infos = {}
 
