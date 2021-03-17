@@ -1,16 +1,27 @@
 from typing import List, Optional, Dict, Union
 from ns.autosklearn.autosklearn_wrapper import AutosklearnWrapper
 import pandas as pd
+import werkzeug
+from storage_manager import storage_manager
+import os
+from io import BytesIO
 
 
 class AutosklearnWrapperManagerInstance:
   # {
-  #   id: { 
-  #    "name": ~~,
-  #    "obj": AutoSklearnWrapper
-  #   }
+  #   id: AutoSklearnWrapper
   # }
   wrappers_dict = {}
+  def __init__(
+    self
+  ):
+    dirs = storage_manager.get_dirs()
+    
+    for dir in dirs:
+      autosklearn_wrapper = AutosklearnWrapper.load(dir)
+      if autosklearn_wrapper is not None:
+        self.wrappers_dict[autosklearn_wrapper.id] = autosklearn_wrapper
+
 
   def create_autosklearn_wrapper(
     self,
@@ -18,31 +29,40 @@ class AutosklearnWrapperManagerInstance:
     algorithm: str,
     training_time: int,
     memory_limit: int,
-    dataset_name: str,
     metric: str,
-    df: pd.DataFrame,
+    file: werkzeug.datastructures.FileStorage,
     target_column: str
   ) -> Optional[int]:
-    if name in [val["name"] for key, val in self.wrappers_dict.items()]:
+    if name in [obj.name for obj in list(self.wrappers_dict.values())]:
       return None
     else:
+      storage_manager.save_filestorage(
+        file=file,
+        relative_path=os.path.join(name, file.filename)
+      )
+      file.stream.seek(0)
+      df = pd.read_csv(BytesIO(file.read()), encoding="utf-8-sig")
+
+      exp_path = os.path.join(storage_manager.root_path, name)
       autosklearn_wrapper = AutosklearnWrapper(
-          algorithm=algorithm,
-          training_time=training_time,
-          memory_limit=memory_limit,
-          dataset_name=dataset_name,
-          metric=metric
+        name=name,
+        algorithm=algorithm,
+        training_time=training_time,
+        memory_limit=memory_limit,
+        dataset_name=file.filename,
+        metric=metric,
+        tmp_folder=os.path.join(exp_path, "tmp"),
+        out_folder=os.path.join(exp_path, "out")
       )
       autosklearn_wrapper.fit(
-          df=df,
-          target_column=target_column
+        df=df,
+        target_column=target_column
       )
 
-      self.wrappers_dict[autosklearn_wrapper.thread.ident] = {
-        "name": name,
-        "obj": autosklearn_wrapper
-      }
-      return autosklearn_wrapper.thread.ident
+      id = autosklearn_wrapper.thread.ident
+      self.wrappers_dict[id] = autosklearn_wrapper
+
+      return id
     
 
   def delete_autosklearn_wrapper(
@@ -64,7 +84,7 @@ class AutosklearnWrapperManagerInstance:
     if id not in list(self.wrappers_dict.keys()):
       return None
     else:
-      history = self.wrappers_dict[id]["obj"].get_history()
+      history = self.wrappers_dict[id].get_history()
       new_history = {
         "estimator": []
       }
@@ -88,12 +108,14 @@ class AutosklearnWrapperManagerInstance:
     if id not in list(self.wrappers_dict.keys()):
       return None
     else:
-      autosklearn_info = self.wrappers_dict[id]["obj"].get_info()
-      autosklearn_info["name"] = self.wrappers_dict[id]["name"]
+      autosklearn_info = self.wrappers_dict[id].get_info()
+      del autosklearn_info["tmp_folder"]
+      del autosklearn_info["out_folder"]
       return autosklearn_info
 
+
   def get_runs_with_status(self) -> List[Dict[str, Union[str, int]]]:
-    return [{"id": id, "name": val["name"], "status": val["obj"].status } for id, val in self.wrappers_dict.items()]
+    return [{"id": id, "name": val.name, "status": val.status} for id, val in self.wrappers_dict.items()]
 
 
 class AutosklearnWrapperManager:

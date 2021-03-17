@@ -4,6 +4,8 @@ from ns.autosklearn.autosklearn_wrapper_manager import manager
 from ns.autosklearn.autosklearn_wrapper import AutosklearnWrapper
 import pandas as pd
 from io import BytesIO
+from storage_manager import storage_manager
+import os
 
 #
 ns = Namespace("autosklearn", description="autosklearn operations")
@@ -66,8 +68,11 @@ history_model = ns.model("autosklearn_history", {
 info_model = ns.model("autosklearn_info", {
   "id": fields.Integer,
   "name": fields.String,
+  "status": fields.String,
   "algorithm": fields.String,
   "training_time": fields.Integer,
+  "memory_limit": fields.Integer,
+  "dataset_name": fields.String,
   "metric": fields.String,
   "scoring_functions": fields.List(fields.String)
 })
@@ -101,17 +106,13 @@ class AutosklearnClassifier(Resource):
   def post(self):
     args = autosklearn_classification_parser.parse_args()
 
-    data = args["file"].read()
-    csv_frame = pd.read_csv(BytesIO(data), encoding="utf-8-sig")
-
     id = manager.create_autosklearn_wrapper(
         name=args["name"],
         algorithm="classification",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
-        dataset_name=args["file"].filename,
         metric=args["metric"],
-        df=csv_frame,
+        file=args["file"],
         target_column=args["target_column"]
     )
 
@@ -137,17 +138,13 @@ class AutosklearnClassifier(Resource):
   def post(self):
     args = autosklearn_regression_parser.parse_args()
 
-    data = args["file"].read()
-    csv_frame = pd.read_csv(BytesIO(data), encoding="utf-8-sig")
-
     id = manager.create_autosklearn_wrapper(
         name=args["name"],
         algorithm="regression",
         training_time=args["training_time"],
         memory_limit=args["memory_limit"],
-        dataset_name=args["file"].filename,
         metric=args["metric"],
-        df=args["csv_frame"],
+        file=args["file"],
         target_column=args["target_column"]
     )
 

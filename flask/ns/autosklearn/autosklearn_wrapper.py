@@ -8,16 +8,21 @@ from smac.runhistory.runhistory import RunHistory
 from typing import List, Dict
 import pandas as pd
 import threading
+from storage_manager import storage_manager
+import os
+from smac.scenario.scenario import Scenario
 
 
 class AutosklearnWrapper:
   def __init__(
     self,
+    name: str,
     algorithm: str,
     training_time: int,
     memory_limit: int,
     dataset_name: str,
     metric: str,
+    scoring_functions: List[str]=None,
     estimators: List[str]=None,
     preprocessors: List[str]=None,
     tmp_folder: str=None,
@@ -29,10 +34,16 @@ class AutosklearnWrapper:
     # check algorithm and allocate scoring function
     if algorithm == "classification":
       self.autosklearnEstimator = AutoSklearnClassifier
-      self.scoring_functions = [scorer for metric, scorer in CLASSIFICATION_METRICS.items()]
+      if scoring_functions is None:
+        self.scoring_functions = [scorer for metric, scorer in CLASSIFICATION_METRICS.items()]
+      else:
+        self.scoring_functions = [CLASSIFICATION_METRICS[scoring_function] for scoring_function in scoring_functions]
     elif algorithm == "regression":
       self.autosklearnEstimator = AutoSklearnRegressor
-      self.scoring_functions = [scorer for metric, scorer in REGRESSION_METRICS.items()]
+      if scoring_functions is None:
+        self.scoring_functions = [scorer for metric, scorer in REGRESSION_METRICS.items()]
+      else:
+        self.scoring_functions = [REGRESSION_METRICS[scoring_function] for scoring_function in scoring_functions]
     else:
       raise ValueError("algorithm only support classification or regression.")
 
@@ -49,6 +60,7 @@ class AutosklearnWrapper:
         self.metric = scoring_function
         break
 
+    self.name = name
     self.training_time = training_time
     self.memory_limit = memory_limit
     self.dataset_name = dataset_name
@@ -57,7 +69,6 @@ class AutosklearnWrapper:
     self.tmp_folder = tmp_folder
     self.out_folder = out_folder
     self.n_jobs = n_jobs
-    self.status = "Creating"
     self.thread = None
 
 
@@ -140,7 +151,7 @@ class AutosklearnWrapper:
         resampling_strategy_arguments=None,
         tmp_folder=self.tmp_folder,
         output_folder=self.out_folder,
-        delete_tmp_folder_after_terminate=True,
+        delete_tmp_folder_after_terminate=False,
         delete_output_folder_after_terminate=False,
         n_jobs=self.n_jobs,
         dask_client=None,
@@ -151,7 +162,7 @@ class AutosklearnWrapper:
         metadata_directory=None,
         metric=self.metric,
         scoring_functions=self.scoring_functions,
-        load_models=False
+        load_models=True
     )
 
     def run_automl(df):
@@ -180,10 +191,14 @@ class AutosklearnWrapper:
           sklearn.model_selection.train_test_split(X, y, random_state=1)
       automl.fit(X_train, y_train, X_test, y_test, dataset_name=self.dataset_name)
       self.status = "Finished"
+      storage_manager.save_json(self.get_info(), os.path.join(self.name, "info.json"))
+
 
     self.thread = threading.Thread(target=run_automl, args=(df, ))
     self.thread.start()
+    self.id = self.thread.ident
     self.status = "Running"
+    storage_manager.save_json(self.get_info(), os.path.join(self.name, "info.json"))
 
 
   def get_history(self) -> Dict:
@@ -213,13 +228,56 @@ class AutosklearnWrapper:
 
   def get_info(self) -> Dict:
     return {
-      "id": self.thread.ident,
+      "id": self.id,
+      "name": self.name,
+      "status": self.status,
       "algorithm": self.algorithm,
       "training_time": self.training_time,
+      "memory_limit": self.memory_limit,
       "dataset_name": self.dataset_name,
       "metric": self.metric.name,
-      "scoring_functions": [f.name.lower() for f in self.scoring_functions]
+      "scoring_functions": [f.name.lower() for f in self.scoring_functions],
+      "tmp_folder": self.tmp_folder,
+      "out_folder": self.out_folder
     }
+
+  @staticmethod
+  def load(name: str):
+    info_json_loc = os.path.join(name, "info.json")
+    if not storage_manager.file_exists(info_json_loc):
+      return None
+    autosklearn_info = storage_manager.load_json(info_json_loc)
+
+    autosklearn_wrapper = AutosklearnWrapper(
+      name=autosklearn_info["name"],
+      algorithm=autosklearn_info["algorithm"],
+      training_time=autosklearn_info["training_time"],
+      memory_limit=autosklearn_info["memory_limit"],
+      dataset_name=autosklearn_info["dataset_name"],
+      metric=autosklearn_info["metric"],
+      tmp_folder=autosklearn_info["tmp_folder"],
+      out_folder=autosklearn_info["out_folder"],
+      scoring_functions=autosklearn_info["scoring_functions"]
+    )
+    autosklearn_wrapper.id = autosklearn_info["id"]
+    autosklearn_wrapper.status = autosklearn_info["status"]
+
+    history_json_loc = os.path.join(autosklearn_info["tmp_folder"], "smac3-output", "run_1", "runhistory.json")
+    scenario_loc = os.path.join(autosklearn_info["tmp_folder"], "smac3-output", "run_1", "scenario.txt")
+
+    if not storage_manager.file_exists(history_json_loc) or not storage_manager.file_exists(scenario_loc):
+      return None
+
+    history_json_loc = storage_manager.get_abspath(history_json_loc)
+    scenario_loc = storage_manager.get_abspath(scenario_loc)
+    scenario = Scenario(scenario_loc, {"output_folder": ""})
+
+    runhistory = RunHistory()
+    runhistory.load_json(history_json_loc, cs=scenario.cs)
+    autosklearn_wrapper.runhistory = runhistory
+
+    return autosklearn_wrapper
+
 
   @staticmethod
   def get_classification_metrics():
