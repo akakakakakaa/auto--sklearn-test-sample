@@ -1,14 +1,8 @@
 import React from "react";
-import Title from "./widgets/Title";
-import HyperGlobe from "./widgets/HyperGlobe";
+import CreateContainer from "./widgets/create/CreateContainer";
 
 function App() {
-  return (
-    <>
-      <Title />
-      <HyperGlobe />
-    </>
-  );
+  return <CreateContainer />;
 }
 
 export default App;

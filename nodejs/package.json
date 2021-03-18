@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@nivo/core": "^0.67.0",
     "@nivo/line": "^0.67.0",
     "@testing-library/jest-dom": "^5.11.9",

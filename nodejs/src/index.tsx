@@ -8,10 +8,37 @@ import "./index.scss";
 
 const darkTheme = createMuiTheme({
   palette: {
-    text: { primary: "#eedba5" },
+    type: "dark",
+    text: { primary: "#e0e0e0" /*"#eedba5"*/ },
   },
   typography: {
     fontFamily: ["BMEULJIRO"].join(","),
+  },
+  overrides: {
+    MuiTableRow: {
+      root: {
+        "&$selected": {
+          backgroundColor: "rgba(224, 224, 224, 0.23)",
+        },
+        "&$selected:hover": {
+          backgroundColor: "rgba(224, 224, 224, 0.23)",
+        },
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        "&$focused": {
+          color: "#94d6c5",
+        },
+      },
+    },
+    MuiInput: {
+      underline: {
+        "&:after": {
+          borderBottom: "2px solid #94d6c5",
+        },
+      },
+    },
   },
 });
 

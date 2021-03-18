@@ -1,10 +1,10 @@
 const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
-const webpack = require('webpack');
+const webpack = require("webpack");
 const HookShellScriptPlugin = require("hook-shell-script-webpack-plugin");
 const { isJSDocCommentContainingNode } = require("typescript");
 
@@ -29,8 +29,8 @@ module.exports = (env, argv) => {
       // 파일 확장자 처리
       extensions: [".ts", ".tsx", ".js", ".jsx"],
       alias: {
-        src: '.'
-      }
+        src: ".",
+      },
     },
 
     module: {
@@ -76,22 +76,22 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-          template: path.join(__dirname, 'src/index.ejs'),
-          filename: 'index.html'                // 생성한 템플릿 파일
+        template: path.join(__dirname, "src/index.ejs"),
+        filename: "index.html", // 생성한 템플릿 파일
       }),
     ].concat(
       mode == "development"
         ? [
-          new webpack.HotModuleReplacementPlugin(),
-          new ForkTsCheckerWebpackPlugin(),
-          new HardSourceWebpackPlugin(),
-        ]
+            new webpack.HotModuleReplacementPlugin(),
+            new ForkTsCheckerWebpackPlugin(),
+            new HardSourceWebpackPlugin(),
+          ]
         : [
-          new CleanWebpackPlugin(),
-          new HookShellScriptPlugin({
-            afterEmit: ["./src/common/utils/i18n_support/i18n_build.sh"],
-          }),
-        ]
+            new CleanWebpackPlugin(),
+            new HookShellScriptPlugin({
+              afterEmit: ["./src/common/utils/i18n_support/i18n_build.sh"],
+            }),
+          ]
     ),
     devServer: {
       hot: true,
@@ -102,7 +102,7 @@ module.exports = (env, argv) => {
       // ],
       compress: true,
       host: "localhost",
-      port: 3500,
+      port: 4545,
     },
-  }
-}
+  };
+};
