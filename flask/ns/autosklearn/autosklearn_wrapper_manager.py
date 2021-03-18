@@ -71,6 +71,7 @@ class AutosklearnWrapperManagerInstance:
   ) -> Optional[int]:
     # TODO: thread can't stop. change thread to process
     if id in list(self.wrappers_dict.keys()):
+      storage_manager.delete_dir(self.wrappers_dict[id].name)
       del self.wrappers_dict[id]
       return 1
     else:

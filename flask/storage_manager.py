@@ -4,6 +4,7 @@ import os
 from abc import *
 import json
 from typing import Dict
+import shutil
 
 
 class StorageManager(ABC):
@@ -59,6 +60,10 @@ class LocalStorageManager(StorageManager):
 
   def get_abspath(self, relative_path: str) -> str:
     return os.path.join(self.root_path, relative_path)
+
+  def delete_dir(self, relative_path: str):
+    dir_path = os.path.join(self.root_path, relative_path)
+    shutil.rmtree(dir_path)
 
 
 class StorageManagerInstance:
