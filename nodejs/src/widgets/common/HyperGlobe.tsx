@@ -44,16 +44,20 @@ export default function HyperGlobe(props: { step: number }) {
       })}
       {props.step === 3 ? (
         <Typography
+          variant="h1"
+          display="inline"
           style={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            color: "white",
-            fontSize: "100px",
+            color: "rgb(238, 198, 94)",
+            fontFamily: "LAB디지털",
+            width: "100%",
+            textAlign: "center",
           }}
         >
-          Start
+          S T A R T
         </Typography>
       ) : null}
     </div>
