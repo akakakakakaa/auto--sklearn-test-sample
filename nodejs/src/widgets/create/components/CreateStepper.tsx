@@ -27,7 +27,7 @@ const icons = [
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: "50%",
+      width: "60%",
       "& div": {
         backgroundColor: "transparent",
       },
@@ -326,7 +326,7 @@ export default function CreateStepper() {
                       onClick={handleNext}
                       className={classes.button}
                     >
-                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      {activeStep === steps.length - 1 ? "Start" : "Next"}
                     </Button>
                   </div>
                 </div>

@@ -13,6 +13,7 @@ export default function Title() {
       color: theme.palette.text.primary,
       verticalAlign: "middle",
       display: "inline-block",
+      fontFamily: "SDSamliphopangche_Outline",
     },
     icon: {
       fontSize: "inherit",

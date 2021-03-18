@@ -1,5 +1,6 @@
 import React from "react";
 import "./HyperGlobe.scss";
+import { Typography } from "@material-ui/core";
 
 function getDirection(step: number) {
   if (step === 2) return "reverse";
@@ -41,7 +42,20 @@ export default function HyperGlobe(props: { step: number }) {
           ></span>
         );
       })}
-      {props.step === 3 ? <h3>Start</h3> : null}
+      {props.step === 3 ? (
+        <Typography
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: "white",
+            fontSize: "100px",
+          }}
+        >
+          Start
+        </Typography>
+      ) : null}
     </div>
   );
 }

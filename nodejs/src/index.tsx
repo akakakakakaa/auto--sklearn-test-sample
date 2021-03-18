@@ -12,7 +12,7 @@ const darkTheme = createMuiTheme({
     text: { primary: "#e0e0e0" /*"#eedba5"*/ },
   },
   typography: {
-    fontFamily: ["BMEULJIRO"].join(","),
+    fontFamily: ["GmarketSansMedium"].join(","),
   },
   overrides: {
     MuiTableRow: {
