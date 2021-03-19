@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import Eye from "./Eye";
 import TouchAppOutlinedIcon from "@material-ui/icons/TouchAppOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function Title() {
+  const eyeEl = useRef<HTMLDivElement>(null);
   const useStyles = makeStyles((theme) => ({
     container: {
       paddingTop: theme.spacing(3),
@@ -15,7 +17,7 @@ export default function Title() {
       verticalAlign: "middle",
       display: "inline-block",
       fontFamily: "SDSamliphopangche_Outline",
-      borderBottom: "3px solid white",
+      //marginLeft: 115,
     },
     icon: {
       fontSize: "inherit",
@@ -23,13 +25,20 @@ export default function Title() {
       display: "inline-block",
       paddingRight: theme.spacing(1),
     },
+    eye: {
+      paddingRight: theme.spacing(13),
+    },
   }));
   const classes = useStyles();
+
   return (
     <div className={classes.container}>
       <Typography variant="h1" className={classes.text}>
-        <TouchAppOutlinedIcon className={classes.icon} />
-        Touch.AI&nbsp;&nbsp;
+        {/*<TouchAppOutlinedIcon className={classes.icon} />*/}
+        <Typography variant="caption" className={classes.eye}>
+          <Eye />
+        </Typography>
+        Farseer.AI
       </Typography>
     </div>
   );

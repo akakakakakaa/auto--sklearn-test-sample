@@ -1,0 +1,74 @@
+.circle {
+  background: black;
+  border-radius: 50%;
+}
+.circle-wrap.right {
+  margin-left: -3em;
+}
+.eye-wrap {
+  position: absolute;
+  width: 8.4em;
+  height: 8.4em;
+  border: 0.8em solid black;
+  background: black;
+  z-index: 200;
+}
+.eye {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8.4em;
+  width: 8.4em;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+  clip-path: ellipse(50% 50% at 50% 50%);
+  animation: cover 4s linear 1s infinite;
+}
+.eye-orange-wrap {
+  position: absolute;
+  top: 1.45em;
+  left: 1.45em;
+}
+.eye-orange {
+  background: #94d6c5;
+  border-radius: 50%;
+  height: 5.5em;
+  width: 5.5em;
+}
+.eye-white {
+  position: absolute;
+  top: -0.625em;
+  left: 3.65em;
+  border-radius: 50%;
+  background: #e0e0e0;
+  width: 2em;
+  height: 2em;
+}
+.eye-black {
+  position: absolute;
+  top: 2.65em;
+  left: 2.65em;
+  border-radius: 50%;
+  background: #1e2430;
+  width: 3.1em;
+  height: 3.1em;
+}
+
+@keyframes cover {
+  0% {
+    -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+    clip-path: ellipse(50% 50% at 50% 50%);
+  }
+  2% {
+    -webkit-clip-path: ellipse(50% 0% at 50% 50%);
+    clip-path: ellipse(50% 0% at 50% 50%);
+  }
+  4% {
+    -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+    clip-path: ellipse(50% 50% at 50% 50%);
+  }
+}
