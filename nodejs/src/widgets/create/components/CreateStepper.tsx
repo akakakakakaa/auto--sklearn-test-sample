@@ -17,7 +17,9 @@ import { taskType } from "../../../common/Constants";
 import HyperGlobe from "../../common/HyperGlobe";
 import Animated from "react-mount-animation";
 import TrainingChart from "./TrainingChart";
-//import { useHistory } from "react-router-dom";
+import VersionPage from "../../VersionPage";
+import CompChart from "../../charts/CompChart";
+import testDataTrainingChart from "../../charts/CompChartData.json";
 
 const iconHeight = "32px";
 const icons = [
@@ -347,7 +349,7 @@ export default function CreateStepper() {
         <HyperGlobe step={3} setIsTraining={setIsTraining} />
       ) : null}
       {/*isTraining ? null : stepper*/}
-      <Animated.div //You can use any HTML element here
+      <Animated.div
         show={!isTraining}
         unmountAnim={` 
             0% {opacity: 1}
@@ -358,12 +360,18 @@ export default function CreateStepper() {
         {stepper}
       </Animated.div>
 
-      <Animated.div //You can use any HTML element here
+      <Animated.div
         show={isTraining}
-        delay={1.5}
+        delay={1.4}
+        mountAnim={` 
+            0% {opacity: 0}
+            100% {opacity: 1}
+        `}
+        style={{ position: "relative", height: "800px" }}
       >
         <>
-          <TrainingChart />
+          <Typography variant="h1">fgkldfgjfdklgjdfklgdfjkl</Typography>
+          <CompChart data={testDataTrainingChart} />
         </>
       </Animated.div>
     </>
