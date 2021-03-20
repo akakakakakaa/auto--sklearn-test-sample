@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HyperGlobe.scss";
-import { Typography } from "@material-ui/core";
+import { Typography, Link } from "@material-ui/core";
+import Countdown from "react-countdown";
 
 function getDirection(step: number) {
   if (step === 2) return "reverse";
@@ -8,9 +9,9 @@ function getDirection(step: number) {
 }
 
 function getSize(step: number) {
-  if (step === 1) return 14;
-  else if (step === 2) return 25;
-  else if (step === 3) return 33;
+  if (step === 1) return 11;
+  else if (step === 2) return 22;
+  else if (step === 3) return 31;
   else return 0;
 }
 
@@ -21,7 +22,11 @@ function getColor(step: number) {
   else return "";
 }
 
-export default function HyperGlobe(props: { step: number }) {
+export default function HyperGlobe(props: {
+  step: number;
+  setIsTraining?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const [isStart, setStart] = useState(false);
   return (
     <>
       <div
@@ -60,7 +65,22 @@ export default function HyperGlobe(props: { step: number }) {
             textAlign: "center",
           }}
         >
-          S T A R T
+          {!isStart ? (
+            <Link
+              href="#"
+              color="inherit"
+              onClick={() => {
+                setStart(true);
+                props.setIsTraining!(true);
+              }}
+            >
+              S T A R T
+            </Link>
+          ) : (
+            <Countdown date={Date.now() + 10000}>
+              <span>D O N E</span>
+            </Countdown>
+          )}
         </Typography>
       ) : null}
     </>

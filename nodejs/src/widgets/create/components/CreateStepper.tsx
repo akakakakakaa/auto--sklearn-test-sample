@@ -15,6 +15,8 @@ import DataObjectSampleTable from "./DataObjectSampleTable";
 import TaskSelector from "./TaskSelector";
 import { taskType } from "../../../common/Constants";
 import HyperGlobe from "../../common/HyperGlobe";
+import Animated from "react-mount-animation";
+import TrainingChart from "./TrainingChart";
 //import { useHistory } from "react-router-dom";
 
 const iconHeight = "32px";
@@ -98,6 +100,7 @@ export default function CreateStepper() {
   const [sampleColumns, setSampleColumns] = useState<string[]>([]);
   const [sampleRows, setSampleRows] = useState<string[][]>([]);
   const [numUniqueVal, setNumUniqueVal] = useState(-1);
+  const [isTraining, setIsTraining] = useState(false);
 
   const setSample = (c: string[], r: string[][]) => {
     setSampleColumns(c);
@@ -293,29 +296,27 @@ export default function CreateStepper() {
     });
   }, [selectedColumn]);*/
 
-  return (
-    <>
-      {activeStep + 1 >= 1 ? <HyperGlobe step={1} /> : null}
-      {activeStep + 1 >= 2 ? <HyperGlobe step={2} /> : null}
-      {activeStep + 1 >= 3 ? <HyperGlobe step={3} /> : null}
-      <div className={classes.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {stepIds.map((index) => (
-            <Step key={index}>
-              <StepLabel icon={icons[index]}>
-                <Typography variant="h6">{steps[index]}</Typography>
-              </StepLabel>
-              <StepContent>
-                <Typography>{getStepContent(index)}</Typography>
-                <div className={classes.actionsContainer}>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.button}
-                    >
-                      Back
-                    </Button>
+  const stepper = (
+    <div className={classes.root}>
+      <Stepper activeStep={activeStep} orientation="vertical">
+        {stepIds.map((index) => (
+          <Step key={index}>
+            <StepLabel icon={icons[index]}>
+              <Typography variant="h6">{steps[index]}</Typography>
+            </StepLabel>
+            <StepContent>
+              <Typography>{getStepContent(index)}</Typography>
+
+              <div className={classes.actionsContainer}>
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                  {activeStep !== steps.length - 1 ? (
                     <Button
                       disabled={
                         selectedId === "-1" ||
@@ -326,34 +327,45 @@ export default function CreateStepper() {
                       onClick={handleNext}
                       className={classes.button}
                     >
-                      {activeStep === steps.length - 1 ? "Start" : "Next"}
+                      Next
                     </Button>
-                  </div>
+                  ) : null}
                 </div>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} className={classes.resetContainer}>
-            {/*<Typography>{`${selectedId} ${selectedColumn} ${expName} ${task} ${getTaskCode(
-            task
-          )}`}</Typography>*/}
-            <Typography>AutoML 실험이 시작됩니다.</Typography>
-            <Typography>학습에는 상당 시간이 소요될 수 있습니다.</Typography>
-            {/*<Button onClick={handleReset} className={classes.button}>
-            Reset
-        </Button>*/}
-            <Button
-              variant="contained"
-              //onClick={handleHome}
-              className={classes.button}
-            >
-              Home
-            </Button>
-          </Paper>
-        )}
-      </div>
+              </div>
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
+    </div>
+  );
+
+  return (
+    <>
+      {activeStep + 1 >= 1 ? <HyperGlobe step={1} /> : null}
+      {activeStep + 1 >= 2 ? <HyperGlobe step={2} /> : null}
+      {activeStep + 1 >= 3 ? (
+        <HyperGlobe step={3} setIsTraining={setIsTraining} />
+      ) : null}
+      {/*isTraining ? null : stepper*/}
+      <Animated.div //You can use any HTML element here
+        show={!isTraining}
+        unmountAnim={` 
+            0% {opacity: 1}
+            10% { transform: translate3d(0,20vh,0); }
+            100% {opacity: 0}
+        `}
+      >
+        {stepper}
+      </Animated.div>
+
+      <Animated.div //You can use any HTML element here
+        show={isTraining}
+        delay={1.5}
+      >
+        <>
+          <TrainingChart />
+        </>
+      </Animated.div>
     </>
   );
 }
