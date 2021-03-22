@@ -36,15 +36,21 @@ export default function HyperGlobe(props: {
           width: `${getSize(props.step)}vw`,
           height: `${getSize(props.step)}vw`,
           margin: `${-getSize(props.step) / 2}vw`,
+          animation: isStart
+            ? `rotate 30s linear infinite`
+            : `rotate 60s linear infinite`,
         }}
       >
-        {[...Array(21)].map((_) => {
+        {[...Array(21)].map((_, index) => {
           return (
             <span
               style={{
                 opacity: props.step / 5,
                 animationDirection: getDirection(props.step),
                 border: `1px solid ${getColor(props.step)}`,
+                animation: isStart
+                  ? `globe ${0.5 * index}s linear infinite`
+                  : `globe ${index}s linear infinite`,
               }}
             ></span>
           );

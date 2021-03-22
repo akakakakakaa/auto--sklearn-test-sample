@@ -28,10 +28,10 @@
   left: 91.35%;
   width: 0;
   height: 0;
-  animation: globe 20s -20s linear infinite;
+  /*animation: globe 20s -20s linear infinite;*/
 }
 
-.hyperglobe span + span {
+/*.hyperglobe span + span {
   animation: globe 20s -19s linear infinite;
 }
 
@@ -296,7 +296,7 @@
   + span {
   display: none;
   animation: globe 20s 0s linear infinite;
-}
+}*/
 
 @keyframes globe {
   6.25% {

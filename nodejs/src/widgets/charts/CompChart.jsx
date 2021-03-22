@@ -1,8 +1,17 @@
 import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
+const theme = {
+  line: {
+    stroke: "#ffffff",
+    strokeWidth: 1,
+    strokeOpacity: 0.35,
+  },
+};
+
 const CompChart = ({ data /* see data tab */ }) => (
   <ResponsiveLine
+    theme={theme}
     id={"training-chart"}
     data={data}
     margin={{ top: 50, right: 140, bottom: 50, left: 60 }}
@@ -41,7 +50,30 @@ const CompChart = ({ data /* see data tab */ }) => (
     pointBorderWidth={2}
     pointBorderColor={{ from: "serieColor" }}
     pointLabelYOffset={-12}
+    pointLabel={(d) => `Time: ${d.x}, Accuracy: ${d.y}`}
+    //sliceTooltip={(slice) => <div>{slice.id}</div>}
     useMesh={true}
+    tooltip={(point) => {
+      console.dir(point);
+      return (
+        <div
+          style={{
+            background: "white",
+            padding: "9px 12px",
+            border: "1px solid #ccc",
+            fontSize: `12px`,
+            fontFamily: `GmarketSansMedium`,
+          }}
+        >
+          <div>
+            <strong>Time</strong> {point.point.data.xFormatted}
+          </div>
+          <div>
+            <strong>Accuracy</strong> {point.point.data.yFormatted}
+          </div>
+        </div>
+      );
+    }}
     legends={[
       {
         anchor: "bottom-right",
