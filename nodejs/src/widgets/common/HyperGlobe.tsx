@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./HyperGlobe.scss";
 import { Typography, Link } from "@material-ui/core";
 import Countdown from "react-countdown";
+import Animated from "react-mount-animation";
 
 function getDirection(step: number) {
   if (step === 2) return "reverse";
@@ -65,7 +66,13 @@ export default function HyperGlobe(props: {
             textAlign: "center",
           }}
         >
-          {!isStart ? (
+          <Animated.div
+            show={!isStart}
+            unmountAnim={` 
+            0% {opacity: 1}
+            100% {opacity: 0}
+        `} /*10% { transform: translate3d(0,20vh,0); }*/
+          >
             <Link
               href="#"
               color="inherit"
@@ -76,11 +83,21 @@ export default function HyperGlobe(props: {
             >
               S T A R T
             </Link>
-          ) : (
+          </Animated.div>
+
+          <Animated.div
+            id="training-chart"
+            show={isStart}
+            delay={1.4}
+            mountAnim={` 
+            0% {opacity: 0}
+            100% {opacity: 1}
+        `}
+          >
             <Countdown date={Date.now() + 10000}>
               <span>D O N E</span>
             </Countdown>
-          )}
+          </Animated.div>
         </Typography>
       ) : null}
     </>

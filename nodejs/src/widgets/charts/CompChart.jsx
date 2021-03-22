@@ -3,6 +3,7 @@ import { ResponsiveLine } from "@nivo/line";
 
 const CompChart = ({ data /* see data tab */ }) => (
   <ResponsiveLine
+    id={"training-chart"}
     data={data}
     margin={{ top: 50, right: 140, bottom: 50, left: 60 }}
     xScale={{ type: "point" }}
@@ -22,7 +23,7 @@ const CompChart = ({ data /* see data tab */ }) => (
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "time",
+      legend: "Time",
       legendOffset: 36,
       legendPosition: "middle",
     }}
@@ -32,7 +33,7 @@ const CompChart = ({ data /* see data tab */ }) => (
       tickPadding: 5,
       tickRotation: 0,
       legend: "Accuracy",
-      legendOffset: -40,
+      legendOffset: -50,
       legendPosition: "middle",
     }}
     pointSize={10}
