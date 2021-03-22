@@ -1,0 +1,28 @@
+.MuiDropzoneArea-root {
+  width: 75% !important;
+  min-height: 0 !important;
+}
+
+.MuiDropzoneSnackbar-successAlert {
+  background-color: #94d6c5 !important;
+}
+
+.MuiDropzoneSnackbar-errorAlert {
+  background-color: #f44336 !important;
+  .MuiDropzoneSnackbar-message {
+    color: white !important;
+  }
+}
+
+.MuiDropzoneArea-active {
+  background-color: #94d6c5 !important;
+  border-color: #94d6c5 !important;
+  .MuiDropzoneSnackbar-message {
+    color: black !important;
+  }
+}
+
+.MuiDropzoneArea-invalid {
+  background-color: #f44336 !important;
+  border-color: #f44336 !important;
+}

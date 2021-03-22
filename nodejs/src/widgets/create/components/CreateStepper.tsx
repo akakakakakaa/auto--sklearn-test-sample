@@ -17,7 +17,10 @@ import { taskType } from "../../../common/Constants";
 import HyperGlobe from "../../common/HyperGlobe";
 import Animated from "react-mount-animation";
 import TrainingChart from "./TrainingChart";
+import FileUploader from "./FileUploader";
 import "./CreateStepper.scss";
+
+// fetch("http://localhost:5500/autosklearn/139741141624576/history").then(response => (response.json())).then(json => console.dir(json))
 
 const iconHeight = "32px";
 const icons = [
@@ -92,6 +95,7 @@ export default function CreateStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [selected, setSelected] = useState<string[]>([]); // DataObject Name
   const [selectedId, setSelectedId] = useState("-1"); // DataObject ID
+  const [uploadedCSV, setCSV] = useState<File>();
   const [selectedColumn, setSelectedColumn] = useState("");
   const [expName, setExpName] = useState("");
   const [task, setTask] = useState<taskType>("classification");
@@ -101,6 +105,8 @@ export default function CreateStepper() {
   const [sampleRows, setSampleRows] = useState<string[][]>([]);
   const [numUniqueVal, setNumUniqueVal] = useState(-1);
   const [isTraining, setIsTraining] = useState(false);
+
+  console.dir(uploadedCSV);
 
   const setSample = (c: string[], r: string[][]) => {
     setSampleColumns(c);
@@ -137,13 +143,14 @@ export default function CreateStepper() {
             <Typography className={classes.indicatorText}>
               학습할 데이터를 선택해주십시오.
             </Typography>
-            <DataObjectSelectTable
+            {/*<DataObjectSelectTable
               doList={doList}
               selected={selected}
               setSelected={setSelected}
               selectedId={selectedId}
               setSelectedId={setSelectedId}
-            />
+            />*/}
+            <FileUploader setCSV={setCSV} />
           </>
         );
       case 1:
@@ -319,7 +326,8 @@ export default function CreateStepper() {
                   {activeStep !== steps.length - 1 ? (
                     <Button
                       disabled={
-                        selectedId === "-1" ||
+                        //selectedId === "-1" ||
+                        uploadedCSV === undefined ||
                         (activeStep === 1 &&
                           (selectedColumn === "" || expName === ""))
                       }
