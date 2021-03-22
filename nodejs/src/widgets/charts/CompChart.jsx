@@ -2,10 +2,12 @@ import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const theme = {
-  line: {
-    stroke: "#ffffff",
-    strokeWidth: 1,
-    strokeOpacity: 0.35,
+  crosshair: {
+    line: {
+      stroke: "#e0e0e0",
+      strokeWidth: 2,
+      //strokeOpacity: 0.35,
+    },
   },
 };
 
@@ -54,22 +56,30 @@ const CompChart = ({ data /* see data tab */ }) => (
     //sliceTooltip={(slice) => <div>{slice.id}</div>}
     useMesh={true}
     tooltip={(point) => {
-      console.dir(point);
       return (
         <div
           style={{
-            background: "white",
-            padding: "9px 12px",
-            border: "1px solid #ccc",
+            background: "#1e2430",
+            color: "rgb(148, 214, 197)",
             fontSize: `12px`,
             fontFamily: `GmarketSansMedium`,
+            minWidth: "120px",
+            position: `relative`,
           }}
         >
-          <div>
-            <strong>Time</strong> {point.point.data.xFormatted}
-          </div>
-          <div>
-            <strong>Accuracy</strong> {point.point.data.yFormatted}
+          <div style={{ transform: "translateY(-50%)" }}>
+            <div>
+              <strong style={{ float: "left" }}>Time</strong>
+              <text style={{ float: "right" }}>
+                {point.point.data.xFormatted}
+              </text>
+            </div>
+            <div style={{ clear: "both" }}>
+              <strong style={{ float: "left" }}>Accuracy</strong>
+              <text style={{ float: "right" }}>
+                {point.point.data.yFormatted}
+              </text>
+            </div>
           </div>
         </div>
       );
