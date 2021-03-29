@@ -41,7 +41,7 @@ export default function TrainingChart(props: { expId: string }) {
           response.estimator
             .map((model) => {
               return {
-                id: model.name + new Date(),
+                id: model.name, //+ new Date(),
                 color: "hsl(81, 70%, 50%)",
                 data: model.history
                   .map((history, index2) => {
