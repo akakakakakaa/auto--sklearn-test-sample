@@ -11,11 +11,13 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import DataObjectSampleTable from "./DataObjectSampleTable";
 import TaskSelector from "./TaskSelector";
-import { taskType } from "../../../common/Constants";
+// import { taskType } from "../../../common/Constants";
 import HyperGlobe from "../../common/HyperGlobe";
 import Animated from "react-mount-animation";
 import TrainingChart from "./TrainingChart";
 import FileUploader from "./FileUploader";
+import createExperiment from "../../../api/createExperiment";
+import { taskType } from "../../../api/config";
 import "./CreateStepper.scss";
 
 // fetch("http://localhost:5500/autosklearn/139741141624576/history").then(response => (response.json())).then(json => console.dir(json))
@@ -62,6 +64,7 @@ export default function CreateStepper() {
   const [sampleColumns, setSampleColumns] = useState<string[]>([]);
   const [sampleRows, setSampleRows] = useState<string[][]>([]);
   const [isTraining, setIsTraining] = useState(false);
+  const [expId, setExpId] = useState("");
   const setSample = (c: string[], r: string[][]) => {
     setSampleColumns(c);
     setSampleRows(r);
@@ -146,6 +149,22 @@ export default function CreateStepper() {
     readCSV();
   }, [uploadedCSV]);
 
+  useEffect(() => {
+    const metric = "accuracy";
+    const memory_limit = 3000;
+    const training_time = 120;
+    createExperiment(
+      task,
+      expName,
+      training_time,
+      memory_limit,
+      metric,
+      selectedColumn,
+      uploadedCSV!
+    ).then((response) => setExpId(response.id));
+    //.then((history) => console.dir(history));
+  }, [isTraining]);
+
   const stepper = (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -218,7 +237,7 @@ export default function CreateStepper() {
         style={{ height: "75vh", width: "60vw" }}
       >
         <>
-          <TrainingChart />
+          <TrainingChart expId={expId} />
         </>
       </Animated.div>
     </>

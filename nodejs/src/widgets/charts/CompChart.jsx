@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const theme = {
@@ -55,6 +55,8 @@ const CompChart = ({ data /* see data tab */ }) => (
     pointLabel={(d) => `Time: ${d.x}, Accuracy: ${d.y}`}
     //sliceTooltip={(slice) => <div>{slice.id}</div>}
     useMesh={true}
+    animate={true}
+    //useMesh={false}
     tooltip={(point) => {
       return (
         <div

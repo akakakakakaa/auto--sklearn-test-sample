@@ -9,7 +9,8 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
-import { taskType } from "../../../common/Constants";
+//import { taskType } from "../../../common/Constants";
+import { taskType } from "../../../api/config";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const taskList: taskType[] = ["classification", "regression", "timeseries"];
+const taskList: taskType[] = ["classification", "regression"]; //, "timeseries"];
 
 export default function TaskSelector(props: {
   task: taskType;
