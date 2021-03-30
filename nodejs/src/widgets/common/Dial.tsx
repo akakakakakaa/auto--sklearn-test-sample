@@ -5,8 +5,9 @@ import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import LocalCafeIcon from "@material-ui/icons/LocalCafe";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import { useHistory } from "react-router-dom";
+import DonationDialog from "../../common/DonationDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const actions = [
-  { icon: <LocalCafeIcon />, name: "개발자 후원하기", url: "donate" },
+  { icon: <MailOutlineIcon />, name: "구독하기", url: "subscribe" },
   { icon: <PostAddIcon />, name: "실험 생성하기", url: "create" },
   { icon: <FormatListBulletedIcon />, name: "실험 목록보기", url: "list" },
 ];
@@ -43,6 +44,7 @@ export default function SpeedDialTooltipOpen() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const history = useHistory();
+  const [subscribeOpen, setSubscribeopen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -69,11 +71,16 @@ export default function SpeedDialTooltipOpen() {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={() => handleClose(action.url)}
+            onClick={
+              action.url !== "subscribe"
+                ? () => handleClose(action.url)
+                : () => setSubscribeopen(true)
+            }
             classes={classes}
           />
         ))}
       </SpeedDial>
+      <DonationDialog open={subscribeOpen} setOpen={setSubscribeopen} />
     </div>
   );
 }

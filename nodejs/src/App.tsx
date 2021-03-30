@@ -9,7 +9,6 @@ function App() {
       <Route exact path="/" component={CreateContainer} />
       <Route path="/create" component={CreateContainer} />
       <Route path="/list" component={ListContainer} />
-      <Route path="/donate" component={ListContainer} />
     </Switch>
   );
 }
