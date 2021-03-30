@@ -103,6 +103,7 @@ module.exports = (env, argv) => {
       compress: true,
       host: "localhost",
       port: 4545,
+      historyApiFallback: true,
     },
   };
 };

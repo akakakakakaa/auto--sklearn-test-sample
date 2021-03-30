@@ -1,8 +1,6 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import CreateStepper from "./components/CreateStepper";
 import Title from "../common/Title";
-import Dial from "../common/Dial";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,14 +9,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-export default function CreateContainer() {
+export default function ListContainer() {
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <Title />
-      <CreateStepper />
-      <Dial />
     </div>
   );
 }
