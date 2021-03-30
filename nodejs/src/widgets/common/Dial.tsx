@@ -6,6 +6,7 @@ import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import LocalCafeIcon from "@material-ui/icons/LocalCafe";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,21 +34,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const actions = [
-  { icon: <LocalCafeIcon />, name: "개발자 후원하기" },
-  { icon: <PostAddIcon />, name: "실험 생성하기" },
-  { icon: <FormatListBulletedIcon />, name: "실험 목록보기" },
+  { icon: <LocalCafeIcon />, name: "개발자 후원하기", url: "donate" },
+  { icon: <PostAddIcon />, name: "실험 생성하기", url: "create" },
+  { icon: <FormatListBulletedIcon />, name: "실험 목록보기", url: "list" },
 ];
 
 export default function SpeedDialTooltipOpen() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (url?: string) => {
     setOpen(false);
+    if (!!url) history.push(`/${url}`);
   };
 
   return (
@@ -56,7 +59,7 @@ export default function SpeedDialTooltipOpen() {
         ariaLabel="SpeedDial"
         className={classes.speedDial}
         icon={<SpeedDialIcon />}
-        onClose={handleClose}
+        onClose={() => handleClose()}
         onOpen={handleOpen}
         open={open}
       >
@@ -66,7 +69,7 @@ export default function SpeedDialTooltipOpen() {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={handleClose}
+            onClick={() => handleClose(action.url)}
             classes={classes}
           />
         ))}
