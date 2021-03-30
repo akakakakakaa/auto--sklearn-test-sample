@@ -80,7 +80,7 @@ export default function HyperGlobe(props: {
         `} /*10% { transform: translate3d(0,20vh,0); }*/
           >
             <Link
-              //href="#"
+              href="#"
               color="inherit"
               onClick={() => {
                 setStart(true);
