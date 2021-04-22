@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "../common/Title";
 import Dial from "../common/Dial";
+import Experiments from "./components/Experiments";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -15,6 +16,7 @@ export default function ListContainer() {
   return (
     <div className={classes.container}>
       <Title />
+      <Experiments />
       <Dial />
     </div>
   );

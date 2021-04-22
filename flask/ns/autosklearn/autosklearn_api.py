@@ -202,8 +202,8 @@ class AutosklearnDelete(Resource):
     else:
       return {"msg": "success"}
 
-
 @ns.route("/")
+@ns.route("/experiments")
 class AutosklearnList(Resource):
   @ns.response(200, "Success", runs_model)
   def get(self):

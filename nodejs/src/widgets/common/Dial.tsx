@@ -4,6 +4,7 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import { useHistory } from "react-router-dom";
@@ -38,6 +39,11 @@ const actions = [
   { icon: <MailOutlineIcon />, name: "구독하기", url: "subscribe" },
   { icon: <PostAddIcon />, name: "실험 생성하기", url: "create" },
   { icon: <FormatListBulletedIcon />, name: "실험 목록보기", url: "list" },
+  {
+    icon: <AccountTreeOutlinedIcon />,
+    name: "실험 목록보기 (나무)",
+    url: "tree",
+  },
 ];
 
 export default function SpeedDialTooltipOpen() {
@@ -55,6 +61,17 @@ export default function SpeedDialTooltipOpen() {
     if (!!url) history.push(`/${url}`);
   };
 
+  function handleAction(url: string) {
+    if (url === "subscribe") return () => setSubscribeopen(true);
+    else if (url === "list")
+      return window.location.pathname === "/list"
+        ? () => window.location.reload()
+        : () => handleClose(url);
+    else if (url === "create") return () => handleClose(url);
+    else if (url === "tree") return () => handleClose(url);
+    else return () => null;
+  }
+
   return (
     <div className={classes.root}>
       <SpeedDial
@@ -71,11 +88,7 @@ export default function SpeedDialTooltipOpen() {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={
-              action.url !== "subscribe"
-                ? () => handleClose(action.url)
-                : () => setSubscribeopen(true)
-            }
+            onClick={handleAction(action.url)}
             classes={classes}
           />
         ))}

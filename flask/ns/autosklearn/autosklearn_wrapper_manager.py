@@ -118,7 +118,6 @@ class AutosklearnWrapperManagerInstance:
   def get_runs_with_status(self) -> List[Dict[str, Union[str, int]]]:
     return [{"id": id, "name": val.name, "status": val.status} for id, val in self.wrappers_dict.items()]
 
-
 class AutosklearnWrapperManager:
   instance = AutosklearnWrapperManagerInstance()
 

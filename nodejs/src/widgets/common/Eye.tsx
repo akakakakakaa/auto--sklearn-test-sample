@@ -26,10 +26,10 @@ function addMouseEvent() {
   const eyeOrange = document.querySelector<HTMLElement>(".eye-orange-wrap");
   const eyeBlack = document.querySelector<HTMLElement>(".eye-black");
 
-  window.addEventListener("mousemove", handleMove);
-  window.addEventListener("touchmove", handleMove);
+  window.addEventListener("mousemove", (e: Event) => handleMove(e));
+  window.addEventListener("touchmove", (e: Event) => handleMove(e));
 
-  function handleMove(e: React.TouchEvent | React.MouseEvent) {
+  function handleMove(e: React.TouchEvent | React.MouseEvent | Event) {
     const clientSize = { x: 0, y: 0 };
     if (e instanceof TouchEvent) {
       clientSize.x = e.touches[0].clientX;
@@ -37,6 +37,8 @@ function addMouseEvent() {
     } else if (e instanceof MouseEvent) {
       clientSize.x = e.clientX;
       clientSize.y = e.clientY;
+    } else {
+      return;
     }
     const { top, left, width, height } = eyeOrange!.getBoundingClientRect();
     const diffX = (clientSize.x - left - width / 2) / TRANSFORM_RATIO;

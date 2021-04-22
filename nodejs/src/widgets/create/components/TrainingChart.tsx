@@ -34,31 +34,34 @@ export default function TrainingChart(props: { expId: string }) {
     return () => clearTimeout(timeout);
   }, []);*/
 
+  const loadData = () => {
+    getHistory(props.expId).then((response) => {
+      setData(
+        response.estimator
+          .map((model: any) => {
+            return {
+              id: model.name, //+ new Date(),
+              color: "hsl(81, 70%, 50%)",
+              data: model.history
+                .map((history: any, index2: any) => {
+                  return history.metric[0] && "val" in history.metric[0]
+                    ? {
+                        x: index2,
+                        y: history.metric[0].val,
+                      }
+                    : { x: -1, y: 0 };
+                })
+                .filter((e: any) => e.x !== -1),
+            };
+          })
+          .filter((e: any) => e.data.length > 1) // && e.id === "random_forest"
+      );
+    });
+  };
+
   useEffect(() => {
-    const timeout = setInterval(() => {
-      getHistory(props.expId).then((response) => {
-        setData(
-          response.estimator
-            .map((model) => {
-              return {
-                id: model.name, //+ new Date(),
-                color: "hsl(81, 70%, 50%)",
-                data: model.history
-                  .map((history, index2) => {
-                    return history.metric[0] && "val" in history.metric[0]
-                      ? {
-                          x: index2,
-                          y: history.metric[0].val,
-                        }
-                      : { x: -1, y: 0 };
-                  })
-                  .filter((e) => e.x !== -1),
-              };
-            })
-            .filter((e) => e.data.length > 1) // && e.id === "random_forest"
-        );
-      });
-    }, 3000);
+    loadData();
+    const timeout = setInterval(loadData, 3000);
     return () => clearTimeout(timeout);
   }, []);
 
