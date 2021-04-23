@@ -5,6 +5,7 @@ body {
   width: 100%;
   height: 100%;
   background: #1e2430;
+  overflow: hidden;
 }
 
 /*@font-face {
@@ -37,4 +38,19 @@ body {
     format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 1.5rem;
+  border-radius: 1rem;
+  background-clip: padding-box;
+  border: 0.5rem solid transparent;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 0 10px;
 }

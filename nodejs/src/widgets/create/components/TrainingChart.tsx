@@ -13,7 +13,7 @@ export default function TrainingChart(props: { expId: string }) {
     {
       id: "1",
       color: "hsl(81, 70%, 50%)",
-      data: [{ x: 0, y: 0 }],
+      data: [],
     },
   ]);
   /*useEffect(() => {

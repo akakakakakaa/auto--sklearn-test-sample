@@ -96,10 +96,22 @@ const StyledTreeItem = withStyles((theme: Theme) =>
 const useStyles = makeStyles(
   createStyles({
     root: {
-      maxHeight: "90vh",
+      display: "inline-block",
+      float: "left",
+    },
+    treeviewContainer: {
+      height: "calc(100vh - 200px)",
       flexGrow: 1,
-      maxWidth: "20vw",
+      overflow: "hidden",
+      "&:hover": {
+        overflowY: "auto",
+      },
+    },
+    treeview: {
       color: "#e0e0e0",
+      marginRight: "1.1rem",
+      maxWidth: "20vw",
+      minWidth: "200px",
     },
   })
 );
@@ -321,66 +333,68 @@ export default function CustomizedTreeView(props: {
   const [searchText, setSearchText] = useState("");
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div className={classes.root}>
       <TreeviewSearchField setSearchText={setSearchText} />
-      <TreeView
-        className={classes.root}
-        defaultExpanded={["exp-1", "exp-1-1-versions"]}
-        defaultCollapseIcon={<MinusSquare />}
-        defaultExpandIcon={<PlusSquare />}
-        defaultEndIcon={<CloseSquare />}
-      >
-        <TreeItem
-          nodeId="AutoML"
-          collapseIcon={<FolderIcon style={{ color: "#94d6c5" }} />}
-          expandIcon={<FolderOpenIcon style={{ color: "#94d6c5" }} />}
-          endIcon={<FolderIcon style={{ color: "#94d6c5" }} />}
-          label={<Typography variant="body2">AutoML</Typography>}
+      <div className={classes.treeviewContainer}>
+        <TreeView
+          className={classes.treeview}
+          defaultExpanded={["exp-1", "exp-1-1-versions"]}
+          defaultCollapseIcon={<MinusSquare />}
+          defaultExpandIcon={<PlusSquare />}
+          defaultEndIcon={<CloseSquare />}
         >
-          {props.expList.map((exp: any) => (
-            <ExpLeaf
-              exp={exp}
-              setSelected={props.setSelected}
-              searchText={searchText}
-              folderType="automl"
-            />
-          ))}
-        </TreeItem>
+          <TreeItem
+            nodeId="AutoML"
+            collapseIcon={<FolderIcon style={{ color: "#94d6c5" }} />}
+            expandIcon={<FolderOpenIcon style={{ color: "#94d6c5" }} />}
+            endIcon={<FolderIcon style={{ color: "#94d6c5" }} />}
+            label={<Typography variant="body2">AutoML</Typography>}
+          >
+            {props.expList.map((exp: any) => (
+              <ExpLeaf
+                exp={exp}
+                setSelected={props.setSelected}
+                searchText={searchText}
+                folderType="automl"
+              />
+            ))}
+          </TreeItem>
 
-        <TreeItem
-          nodeId="ML lab"
-          collapseIcon={<FolderIcon style={{ color: "#FFD700" }} />}
-          expandIcon={<FolderOpenIcon style={{ color: "#FFD700" }} />}
-          endIcon={<FolderIcon style={{ color: "#FFD700" }} />}
-          label={<Typography variant="body2">ML lab</Typography>}
-        >
-          {props.expList.map((exp: any) => (
-            <ExpLeaf
-              exp={exp}
-              setSelected={props.setSelected}
-              searchText={searchText}
-              folderType="mllab"
-            />
-          ))}
-        </TreeItem>
+          <TreeItem
+            nodeId="ML lab"
+            collapseIcon={<FolderIcon style={{ color: "#FFD700" }} />}
+            expandIcon={<FolderOpenIcon style={{ color: "#FFD700" }} />}
+            endIcon={<FolderIcon style={{ color: "#FFD700" }} />}
+            label={<Typography variant="body2">ML lab</Typography>}
+          >
+            {props.expList.map((exp: any) => (
+              <ExpLeaf
+                exp={exp}
+                setSelected={props.setSelected}
+                searchText={searchText}
+                folderType="mllab"
+              />
+            ))}
+          </TreeItem>
 
-        <TreeItem
-          nodeId="Predefined AI"
-          collapseIcon={<FolderIcon style={{ color: "#FF8C00" }} />}
-          expandIcon={<FolderOpenIcon style={{ color: "#FF8C00" }} />}
-          endIcon={<FolderIcon style={{ color: "#FF8C00" }} />}
-          label={<Typography variant="body2">Predefined AI</Typography>}
-        >
-          {props.expList.map((exp: any) => (
-            <ExpLeaf
-              exp={exp}
-              setSelected={props.setSelected}
-              searchText={searchText}
-              folderType="predefinedai"
-            />
-          ))}
-        </TreeItem>
-      </TreeView>
+          <TreeItem
+            nodeId="Predefined AI"
+            collapseIcon={<FolderIcon style={{ color: "#FF8C00" }} />}
+            expandIcon={<FolderOpenIcon style={{ color: "#FF8C00" }} />}
+            endIcon={<FolderIcon style={{ color: "#FF8C00" }} />}
+            label={<Typography variant="body2">Predefined AI</Typography>}
+          >
+            {props.expList.map((exp: any) => (
+              <ExpLeaf
+                exp={exp}
+                setSelected={props.setSelected}
+                searchText={searchText}
+                folderType="predefinedai"
+              />
+            ))}
+          </TreeItem>
+        </TreeView>
+      </div>
     </div>
   );
 }

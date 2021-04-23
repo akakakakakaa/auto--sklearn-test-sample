@@ -5,6 +5,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import TreeView from "./components/TreeView";
 import { treeClickState } from "./treeClickState";
 import getExperiments from "../../api/oldServer/getExperiments";
+import PageVeiw from "./page/PageView";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,7 @@ export default function ListContainer() {
     <div className={classes.container}>
       <Title />
       <TreeView expList={expList} setSelected={setSelected} />
+      <PageVeiw selected={selected} />
       <Dial />
     </div>
   );
