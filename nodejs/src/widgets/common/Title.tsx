@@ -15,7 +15,7 @@ export default function Title() {
     text: {
       color: theme.palette.text.primary,
       verticalAlign: "middle",
-      display: "inline-block",
+      display: "flex",
       fontFamily: "SDSamliphopangche_Outline",
       //marginLeft: 115,
     },
@@ -26,7 +26,7 @@ export default function Title() {
       paddingRight: theme.spacing(1),
     },
     eye: {
-      paddingRight: theme.spacing(13),
+      paddingRight: theme.spacing(3),
     },
   }));
   const classes = useStyles();

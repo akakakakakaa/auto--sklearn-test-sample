@@ -54,7 +54,13 @@ export default function PageView(props: { selected: treeClickState }) {
   );
 
   return (
-    <div style={{ float: "right", maxWidth: "75vw" }}>
+    <div
+      style={{
+        float: "right",
+        width: "75vw",
+        height: "calc(100vh-200px)",
+      }}
+    >
       {view === "mllab" && testView}
       {view === "experiment" && testView}
       {view === "version" && testView}
