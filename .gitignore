@@ -4,6 +4,6 @@
 __pycache__
 flask/storage
 
-# for nodejs
-nodejs/dist
-nodejs/node_modules
+# for react
+react/dist
+react/node_modules
