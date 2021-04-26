@@ -102,9 +102,11 @@ const useStyles = makeStyles(
     treeviewContainer: {
       height: "calc(100vh - 200px)",
       flexGrow: 1,
-      overflow: "hidden",
+      overflow: "auto",
+      color: "rgba(255, 255, 255, 0)",
+      transition: "color 1.1s ease",
       "&:hover": {
-        overflowY: "auto",
+        color: "rgba(255, 255, 255, 0.3)",
       },
     },
     treeview: {
