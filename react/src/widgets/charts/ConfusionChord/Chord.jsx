@@ -19,14 +19,14 @@ const RibbonTooltip = ({ ribbon }) => (
     rows={[
       [
         <Chip key="chip" color={ribbon.source.color} />,
-        "Actual",
-        <strong key="id">{ribbon.source.label}</strong>,
+        `${ribbon.source.label}을 ${ribbon.target.label}이라고 예측한 경우:`,
+        //<strong key="id">{ribbon.source.label}</strong>,
         ribbon.source.value,
       ],
       [
         <Chip key="chip" color={ribbon.target.color} />,
-        "Predicted",
-        <strong key="id">{ribbon.target.label}</strong>,
+        `${ribbon.target.label}을 ${ribbon.source.label}이라고 예측한 경우:`,
+        //<strong key="id">{ribbon.target.label}</strong>,
         ribbon.target.value,
       ],
     ]}
