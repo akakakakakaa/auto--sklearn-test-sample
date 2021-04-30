@@ -17,11 +17,15 @@ import FolderIcon from "@material-ui/icons/Folder";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import Typography from "@material-ui/core/Typography";
 import AppsIcon from "@material-ui/icons/Apps";
+import BlurCircularIcon from "@material-ui/icons/BlurCircular";
 import BarChartIcon from "@material-ui/icons/BarChart";
+import TimelineIcon from "@material-ui/icons/Timeline";
 import {
   green,
   teal,
   purple,
+  cyan,
+  lime,
   amber,
   deepOrange,
 } from "@material-ui/core/colors";
@@ -274,6 +278,21 @@ function ExpLeaf(props: {
                 }
               >
                 <TreeItem
+                  nodeId={`learningcurve-${id}-${type}-${index + 1}-${
+                    model.name
+                  }`}
+                  label={`learning curve`}
+                  onClick={() =>
+                    props.setSelected({
+                      expId: id,
+                      modelId: model.id,
+                      type: type,
+                      view: "learningcurve",
+                    })
+                  }
+                  icon={<TimelineIcon style={{ color: cyan[500] }} />}
+                />
+                <TreeItem
                   nodeId={`confusionmatrix-${id}-${type}-${index + 1}-${
                     model.name
                   }`}
@@ -287,6 +306,19 @@ function ExpLeaf(props: {
                     })
                   }
                   icon={<AppsIcon style={{ color: deepOrange[300] }} />}
+                />
+                <TreeItem
+                  nodeId={`chord-${id}-${type}-${index + 1}-${model.name}`}
+                  label={`chord`}
+                  onClick={() =>
+                    props.setSelected({
+                      expId: id,
+                      modelId: model.id,
+                      type: type,
+                      view: "chord",
+                    })
+                  }
+                  icon={<BlurCircularIcon style={{ color: lime[300] }} />}
                 />
                 <TreeItem
                   nodeId={`featureimportance-${id}-${type}-${index + 1}-${

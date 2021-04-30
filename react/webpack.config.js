@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
       // 파일 확장자 처리
       extensions: [".ts", ".tsx", ".js", ".jsx"],
       alias: {
-        src: ".",
+        "@": path.resolve(__dirname, "src/"),
       },
     },
 

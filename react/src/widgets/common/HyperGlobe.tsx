@@ -92,7 +92,6 @@ export default function HyperGlobe(props: {
           </Animated.div>
 
           <Animated.div
-            id="training-chart"
             show={isStart}
             delay={1.4}
             mountAnim={` 

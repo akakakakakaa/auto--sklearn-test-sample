@@ -12,13 +12,12 @@ import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import DataObjectSampleTable from "./DataObjectSampleTable";
 import TaskSelector from "./TaskSelector";
 // import { taskType } from "../../../common/Constants";
-import HyperGlobe from "../../common/HyperGlobe";
+import HyperGlobe from "@/widgets/common/HyperGlobe";
 import Animated from "react-mount-animation";
-import TrainingChart from "./TrainingChart";
+import { TrainingChart, ConfusionChord } from "@/widgets/charts";
 import FileUploader from "./FileUploader";
 import createExperiment from "../../../api/createExperiment";
 import { taskType } from "../../../api/config";
-import "./CreateStepper.scss";
 
 // fetch("http://localhost:5500/autosklearn/139741141624576/history").then(response => (response.json())).then(json => console.dir(json))
 
@@ -227,7 +226,6 @@ export default function CreateStepper() {
       </Animated.div>
 
       <Animated.div
-        id="training-chart"
         show={isTraining}
         delay={1.4}
         mountAnim={` 

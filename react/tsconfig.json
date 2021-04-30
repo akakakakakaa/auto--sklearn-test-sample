@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "sourceMap": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -16,8 +19,8 @@
     "isolatedModules": true,
     "suppressImplicitAnyIndexErrors": true,
     "jsx": "react",
-    "allowJs": true,
+    "allowJs": true
   },
-  "include": ["src"],
+  "include": ["./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Experiments.scss";
 import getExperiments from "../../../api/getExperiments";
 import getHistory from "../../../api/getHistory";
-import TrainingChart from "../../create/components/TrainingChart";
+import { TrainingChart } from "@/widgets/charts";
 import Animated from "react-mount-animation";
 import {
   DataGrid,
@@ -50,7 +50,6 @@ export default function Experiments() {
           </div>
         </Animated.div>
         <Animated.div
-          id="training-chart"
           show={expId !== -1}
           delay={1.4}
           mountAnim={` 

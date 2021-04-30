@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CompChart from "../../charts/CompChart";
-import testDataTrainingChart from "../../charts/CompChartData.json";
+import LineChart from "./LineChart";
 import getHistory from "../../../api/getHistory";
 
 export default function TrainingChart(props: { expId: string }) {
@@ -9,13 +8,14 @@ export default function TrainingChart(props: { expId: string }) {
       return { id: item.id, color: item.color, data: item.data.slice(0, 1) };
     })
   );*/
-  const [data, setData] = useState([
+  /*const [data, setData] = useState([
     {
       id: "1",
       color: "hsl(81, 70%, 50%)",
       data: [],
     },
-  ]);
+  ]);*/
+  const [data, setData] = useState([]);
   /*useEffect(() => {
     let index = 0;
     const timeout = setInterval(() => {
@@ -65,5 +65,9 @@ export default function TrainingChart(props: { expId: string }) {
     return () => clearTimeout(timeout);
   }, []);
 
-  return <CompChart data={data} />;
+  return (
+    <div style={{ width: "inherit", height: "inherit" }} id="training-chart">
+      {data.length !== 0 && <LineChart data={data} />}
+    </div>
+  );
 }

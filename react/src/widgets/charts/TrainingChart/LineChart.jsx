@@ -11,12 +11,11 @@ const theme = {
   },
 };
 
-const CompChart = ({ data /* see data tab */ }) => (
+const LineChart = ({ data /* see data tab */ }) => (
   <ResponsiveLine
     theme={theme}
-    id={"training-chart"}
     data={data}
-    margin={{ top: 50, right: 140, bottom: 50, left: 60 }}
+    margin={{ top: 100, right: 140, bottom: 100, left: 60 }}
     xScale={{ type: "point" }}
     yScale={{
       type: "linear",
@@ -67,6 +66,8 @@ const CompChart = ({ data /* see data tab */ }) => (
             fontFamily: `GmarketSansMedium`,
             minWidth: "120px",
             position: `relative`,
+            paddingTop: "11px",
+            paddingBottom: "9px",
           }}
         >
           <div style={{ transform: "translateY(-50%)" }}>
@@ -115,4 +116,4 @@ const CompChart = ({ data /* see data tab */ }) => (
   />
 );
 
-export default CompChart;
+export default LineChart;

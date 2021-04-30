@@ -56,3 +56,9 @@ body::-webkit-scrollbar-thumb {
 *::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 0 10px;
 }
+
+#training-chart text {
+  fill: #e0e0e0 !important;
+  /*font-size: 1rem !important;*/
+  font-weight: bold;
+}

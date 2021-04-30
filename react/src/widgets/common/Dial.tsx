@@ -8,11 +8,11 @@ import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import { useHistory } from "react-router-dom";
-import DonationDialog from "../../common/DonationDialog";
+import DonationDialog from "./DonationDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    dialContainer: {
       height: "100%",
       //transform: "translateZ(0px)",
       flexGrow: 1,
@@ -73,7 +73,7 @@ export default function SpeedDialTooltipOpen() {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.dialContainer}>
       <SpeedDial
         ariaLabel="SpeedDial"
         className={classes.speedDial}
